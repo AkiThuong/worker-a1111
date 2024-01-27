@@ -51,8 +51,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r requirements_versions.txt
 
 COPY --from=download /repositories/ ${ROOT}/repositories/
-COPY --from=download /animagineXLV3_v30.safetensors /stable-diffusion-webui/models/Stable-diffusion/animagineXLV3_v30.safetensors
-COPY --from=download /sdxl_vae.safetensors /stable-diffusion-webui/models/VAE/sdxl_vae.safetensors
+COPY animagineXLV3_v30.safetensors /stable-diffusion-webui/models/Stable-diffusion/animagineXLV3_v30.safetensors
+COPY sdxl_vae.safetensors /stable-diffusion-webui/models/VAE/sdxl_vae.safetensors
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt

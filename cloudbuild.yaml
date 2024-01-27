@@ -18,6 +18,8 @@ steps:
         "gs://ai-chatbot-training.appspot.com/models/sdxl_vae.safetensors",
         "./sdxl_vae.safetensors",
       ]
+  - name: "ubuntu"
+    args: ["ls", "-l"]
 
   # Step to log in to Docker Hub
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -35,9 +37,14 @@ steps:
       - |
         cat /workspace/docker-hub-token | docker login -u tsuneakihmt --password-stdin
 
-  - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "docker.io/tsuneakihmt/anisd-a1111-runpod:tag", "."]
-
+  - name: "gcr.io/kaniko-project/executor:latest"
+    args:
+      - "--dockerfile=Dockerfile"
+      - "--context=dir://."
+      - "--destination=gcr.io/ai-chatbot-training/anisd-a1111-runpod:latest"
+      - "--cache=true"
+      - "--cache-ttl=24h"
+      - "--cache-repo=gcr.io/ai-chatbot-training/kaniko-cache"
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/ai-chatbot-training/anisd-a1111-runpod:latest"]
 
