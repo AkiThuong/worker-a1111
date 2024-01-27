@@ -1,0 +1,25 @@
+serviceAccount: "projects/ai-chatbot-training/serviceAccounts/ai-chatbot-training@appspot.gserviceaccount.com"
+logsBucket: "gs://ai-chatbot-training.appspot.com"
+options:
+  logging: GCS_ONLY
+
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo $(gcloud secrets versions access latest --secret=docker-hub-token) | docker login -u tsuneakihmt --password-stdin
+
+    # Building Docker Image with Kaniko Cache
+  - name: "gcr.io/kaniko-project/executor:latest"
+    args:
+      - "--dockerfile=Dockerfile"
+      - "--context=dir://."
+      - "--destination=gcr.io/ai-chatbot-training/anisd-a1111-runpod:latest"
+      - "--cache=true" # Enable Kaniko caching
+      - "--cache-ttl=24h" # Optional: Set cache time-to-live
+      - "--cache-repo=gcr.io/ai-chatbot-training/kaniko-cache" # Optional: Set cache repository
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/ai-chatbot-training/anisd-a1111-runpod:latest"]
+
