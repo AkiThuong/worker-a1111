@@ -9,15 +9,14 @@ steps:
       [
         "cp",
         "gs://ai-chatbot-training.appspot.com/models/animagineXLV3_v30.safetensors",
-        "/animagineXLV3_v30.safetensors",
+        "./animagineXLV3_v30.safetensors",
       ]
-
   - name: "gcr.io/cloud-builders/gsutil"
     args:
       [
         "cp",
         "gs://ai-chatbot-training.appspot.com/models/sdxl_vae.safetensors",
-        "/sdxl_vae.safetensors",
+        "./sdxl_vae.safetensors",
       ]
 
   # Step to log in to Docker Hub
@@ -48,3 +47,4 @@ steps:
     args: ["push", "gcr.io/ai-chatbot-training/anisd-a1111-runpod:latest"]
 
 timeout: "3600s"
+
