@@ -2,7 +2,7 @@ serviceAccount: "projects/ai-chatbot-training/serviceAccounts/ai-chatbot-trainin
 logsBucket: "gs://ai-chatbot-training.appspot.com"
 options:
   logging: GCS_ONLY
-  machineType: "E2_HIGHMEM_8"
+  machineType: "N1_HIGHCPU_8"
 
 steps:
   - name: "gcr.io/cloud-builders/gsutil"
