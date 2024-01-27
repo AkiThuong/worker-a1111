@@ -38,7 +38,7 @@ steps:
       - |
         cat /workspace/docker-hub-token | docker login -u tsuneakihmt --password-stdin
 
-  - name: "gcr.io/kaniko-project/executor:v1.6.0"
+  - name: "gcr.io/kaniko-project/executor:latest"
     args:
       - "--dockerfile=Dockerfile"
       - "--context=dir://."
