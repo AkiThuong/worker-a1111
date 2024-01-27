@@ -4,7 +4,8 @@ options:
   logging: GCS_ONLY
 
 steps:
-  - name: "gcr.io/cloud-builders/gcloud"
+  # Step to log in to Docker Hub
+  - name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
     args:
       - "-c"
