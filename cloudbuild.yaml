@@ -5,12 +5,20 @@ options:
 
 steps:
   # Step to log in to Docker Hub
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo $(gcloud secrets versions access latest --secret=docker-hub-token) > /workspace/docker-hub-token
+
+  # Step to log in to Docker Hub
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        echo $(gcloud secrets versions access latest --secret=docker-hub-token) | docker login -u tsuneakihmt --password-stdin
+        cat /workspace/docker-hub-token | docker login -u tsuneakihmt --password-stdin
 
   - name: "gcr.io/kaniko-project/executor:latest"
     args:
